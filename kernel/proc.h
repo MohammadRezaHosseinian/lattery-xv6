@@ -108,6 +108,12 @@ struct proc {
   int tickets;  // #EDITED
   int ticks;    // #EDITED
 };
+struct process_info{
+    int num_process;
+    int pids[64];
+    int ticks[64];
+    int tickets[64];
+};
 
 
 

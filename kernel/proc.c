@@ -699,7 +699,7 @@ procdump(void)
 
 //set tickets for process
 //#EDITED
-int setTickets(int n){
+int sptickets(int n){
     //validation
     if (n <= 0 || n > MAX_TICKETS_PER_PROCESS){
         return -1;
@@ -712,23 +712,25 @@ int setTickets(int n){
 }
 
 // #EDITED
-int getprocessinfo(struct process_info *info){
+int processinfo(uint64 ps_address){
     struct proc *p;
     struct proc *current = myproc();
+    struct process_info info;
     acquire(&current->lock);
     int i = 0;
-    info->num_process = 0;
+    info.num_process = 0;
     for(p = proc; p < &proc[NPROC]; p++){
         if (p->state == ZOMBIE || p->state == UNUSED)
             continue;
-        info->num_process++;
-        info->pids[i] = p->pid;
-        info->ticks[i] = p->ticks;
-        info->tickets[i] = p->tickets;
+        info.num_process++;
+        info.pids[i] = p->pid;
+        info.ticks[i] = p->ticks;
+        info.tickets[i] = p->tickets;
         i++;
     }
-
     release(&current->lock);
+    if(copyout(myproc()->pagetable, ps_address, (char *)&info, sizeof(info)) < 0)
+        return -1;
     return 0;
 }
 

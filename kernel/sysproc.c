@@ -96,14 +96,26 @@ sys_uptime(void)
 uint64 sys_sptickets(void) {
     int input;
     argint(0, &input);
-    return setTickets(input);
+    return sptickets(input);
 }
 
 //EDITED
-uint64 sys_processinfo(void){
-  struct process_info info;
-//  argaddr(0, (uint64 *)&info);
-  info.num_process = 0;
+uint64 sys_processinfo(void) {
+    uint64 struct_addr;
 
-  return getprocessinfo(&info);
+    argaddr(0, &struct_addr);
+
+    processinfo(struct_addr);
+
+    return 1;
 }
+//}
+//uint64 sys_getinfo(void){
+//    uint64  struct_addr;
+//
+//    argaddr(0, &struct_addr);
+//
+//    getpinfo(struct_addr);
+//
+//    return 1;
+//}
